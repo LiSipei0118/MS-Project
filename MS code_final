@@ -1,0 +1,62 @@
+#include<mbed.h>
+
+AnalogIn Ain(p20);
+
+PwmOut PWM(p21); 
+
+//use seven-segment to demonstrate the temperature
+BusOut display1(p5, p6, p7, p8, p9, p10, p11, p12);
+BusOut display2(p22, p23, p24, p25, p26, p27, p28, p29);
+
+int main(){
+    PWM.period(0.01);  //set PWM period to 10 ms
+    PWM = Ain * 20.83 - 1.521;  //convert analog in value into PWM duty 
+    
+    //display the exact temperature
+    int temp = Ain*3.3/0.01;   
+    int i = temp/10;    
+    int j = temp - i * 10;
+    switch(i){
+        case 2:
+        display1 = 0x5B;
+        break;
+        case 3:
+        display1 = 0x4F;
+        break;
+        case 4:
+        display1 = 0x66;
+        break;
+    }
+    switch(j){
+        case 0:
+        display2 = 0x3F;
+        break;
+        case 1:
+        display2 = 0x06;
+        break;
+        case 2:
+        display2 = 0x5B;
+        break;
+        case 3:
+        display2 = 0x4F;
+        break;
+        case 4:
+        display2 = 0x66;
+        break;
+        case 5:
+        display2 = 0x6D;
+        break;
+        case 6:
+        display2 = 0x7D;
+        break;
+        case 7:
+        display2 = 0x07;
+        break;
+        case 8:
+        display2 = 0x7F;
+        break;
+        case 9:
+        display2 = 0x6F;
+        break;
+    }
+}
